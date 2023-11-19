@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="UTF-8"></head>
+<title>Tabulu izveides skripti</title>
+<link rel="stylesheet" href ="stili.css"> 
+</head>
+<body>
+<a href = "books.html">Atpakaļ</a>
+<h3>Tabulu izveides skripti</h3>
+
+<h4>Tabula "Autori" </h4>
+<pre>CREATE TABLE `autori` (
+  `idautori` int(11) NOT NULL AUTO_INCREMENT,
+  `uzvārds` varchar(65) DEFAULT NULL,
+  `vārds` varchar(65) DEFAULT NULL,
+  `idvalstis` int(11) NOT NULL,
+  PRIMARY KEY (`idautori`),
+  KEY `idvalstis_idx` (`idvalstis`),
+  CONSTRAINT `idvalstis` FOREIGN KEY (`idvalstis`) REFERENCES `valstis` (`idvalstis`) ON DELETE NO ACTION ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=54 DEFAULT CHARSET=utf8;
+</pre>
+
+<h4>Tabula "Žanrs" </h4>
+<pre>CREATE TABLE `žanrs` (
+  `idžanrs` int(11) NOT NULL AUTO_INCREMENT,
+  `apraksts` varchar(65) DEFAULT NULL,
+  PRIMARY KEY (`idžanrs`)
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
+</pre>
+
+<h4>Tabula "Grāmatas" </h4>
+<pre>CREATE TABLE `grāmatas` (
+  `idgrāmatas` int(11) NOT NULL AUTO_INCREMENT,
+  `nosaukums` varchar(255) NOT NULL,
+  `idautori` int(11) NOT NULL,
+  `idžanrs` int(11) NOT NULL,
+  `lpp_skaits` int(11) DEFAULT NULL,
+  `izdošanas_gads` int(11) DEFAULT NULL,
+  `oriģ_izd_gads` int(11) DEFAULT NULL,
+  `idreitings` int(11) NOT NULL,
+  `idizdevniecības` int(11) NOT NULL,
+  `idlasīšanas_gads` int(11) NOT NULL,
+  PRIMARY KEY (`idgrāmatas`),
+  KEY `idautori_idx` (`idautori`),
+  KEY `idžanrs_idx` (`idžanrs`),
+  KEY `idreitings_idx` (`idreitings`),
+  KEY `idizdevniecības_idx` (`idizdevniecības`),
+  KEY `idlasīšanas_gads_idx` (`idlasīšanas_gads`),
+  CONSTRAINT `idautori` FOREIGN KEY (`idautori`) REFERENCES `autori` (`idautori`) ON DELETE NO ACTION ON UPDATE CASCADE,
+  CONSTRAINT `idizdevniecības` FOREIGN KEY (`idizdevniecības`) REFERENCES `izdevniecības` (`idizdevniecības`) ON DELETE NO ACTION ON UPDATE CASCADE,
+  CONSTRAINT `idlasīšanas_gads` FOREIGN KEY (`idlasīšanas_gads`) REFERENCES `lasīšanasgads` (`idlasīšanas_gads`) ON DELETE NO ACTION ON UPDATE CASCADE,
+  CONSTRAINT `idreitings` FOREIGN KEY (`idreitings`) REFERENCES `reitings` (`idreitings`) ON DELETE NO ACTION ON UPDATE CASCADE,
+  CONSTRAINT `idžanrs` FOREIGN KEY (`idžanrs`) REFERENCES `žanrs` (`idžanrs`) ON DELETE NO ACTION ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=254 DEFAULT CHARSET=utf8;
+</pre>
+
+<h4>Tabula "Izdevniecības" </h4>
+<pre>CREATE TABLE `izdevniecības` (
+  `idizdevniecības` int(11) NOT NULL AUTO_INCREMENT,
+  `nosaukums` varchar(85) DEFAULT NULL,
+  PRIMARY KEY (`idizdevniecības`)
+) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=utf8;
+</pre>
+
+<h4>Tabula "Lasīšanas gads" </h4>
+<pre>CREATE TABLE `lasīšanasgads` (
+  `idlasīšanas_gads` int(11) NOT NULL AUTO_INCREMENT,
+  `gads` year(4) NOT NULL,
+  PRIMARY KEY (`idlasīšanas_gads`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+</pre>
+
+<h4>Tabula "Reitings" </h4>
+<pre>CREATE TABLE `reitings` (
+  `idreitings` int(11) NOT NULL AUTO_INCREMENT,
+  `vērtējums` int(11) DEFAULT NULL,
+  `apraksts` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`idreitings`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+</pre>
+
+<h4>Tabula "Valstis" </h4>
+<pre>CREATE TABLE `valstis` (
+  `idvalstis` int(11) NOT NULL AUTO_INCREMENT,
+  `nosaukums` varchar(65) DEFAULT NULL,
+  PRIMARY KEY (`idvalstis`)
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
+</pre>
+
+<br>
+<br>
+</body>
+</html>

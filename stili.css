@@ -1,0 +1,18 @@
+body {
+  background-color: yellow;
+}
+
+
+table, th, td {
+  border: 1px solid;
+  border-collapse: collapse;
+  padding: 10px;
+}
+
+.theading {background-color: #2E86C1;  color: white; }
+.divtabula tr:nth-child(even){background-color: #f2f2f2;}
+/*.divtabula tr:nth-child(odd){background-color: gray;}*/
+.divtabula tr:hover {background-color: red;}
+
+ 
+

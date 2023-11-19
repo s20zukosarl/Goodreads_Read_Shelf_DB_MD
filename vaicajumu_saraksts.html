@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head><meta charset="UTF-8"></head>
+<title>Vaicājumi</title>
+<link rel="stylesheet" href ="stili.css"> 
+</head>
+<body>
+<a href = "books.html">Atpakaļ</a>
+<h3>10 vaicājumi</h3>
+
+<h4>Vaicājums 1 </h4>
+<p>Cik grāmatas katrā gadā ir izlasītas un to kopējais lpp skaits, vidējais reitings</p>
+<pre> 
+select gads, count(idgrāmatas) as'Izlasīto grāmatu skaits', sum(lpp_skaits) as 'Izlasīto lpp skaits',
+avg(vērtējums) as 'Vidējais vērtējums'
+from grāmatas, lasīšanasgads, reitings
+where lasīšanasgads.idlasīšanas_gads = grāmatas.idlasīšanas_gads and
+reitings.idreitings = grāmatas.idreitings
+group by gads;
+</pre>
+
+<h4>Vaicājums 2 </h4>
+<p>Grāmatas, kurām ir vairāk par 450 lpp., sakārtot pēc reitinga (zemākā uz augstāko), augošā
+secībā pēc vērtējumiem</p>
+<pre> 
+select nosaukums, uzvārds, lpp_skaits,vērtējums
+from grāmatas, autori, žanrs, reitings
+where autori.idautori = grāmatas.idautori and
+žanrs.idžanrs = grāmatas.idžanrs and
+reitings.idreitings = grāmatas.idreitings and
+lpp_skaits >= 450
+order by vērtējums asc;
+</pre>
+
+<h4>Vaicājums 3 </h4>
+<p>Autori, kas sarakstījuši vairāk par 2 grāmatām, no kuras valsts, sakārto alfabētiski pēc autora vārda</p>
+<pre> 
+select uzvārds, vārds, count(uzvārds) as 'Grāmatu skaits', valstis.nosaukums
+from autori, grāmatas, valstis
+where valstis.idvalstis = autori.idvalstis and
+autori.idautori= grāmatas.idautori 
+group by uzvārds
+having count(uzvārds) >= 2
+order by vārds desc;
+</pre>
+<h4>Vaicājums 4 </h4>
+<p>Grāmatas, kurām nosaukums sākas ar the, kāds žanrs, no kuras valsts, autora
+uzvārds un vārds, žanri alfabēta secībā</p>
+<pre> 
+select grāmatas.nosaukums, apraksts, valstis.nosaukums, uzvārds, vārds
+from grāmatas, žanrs, autori, valstis
+where valstis.idvalstis = autori.idvalstis and
+autori.idautori = grāmatas.idautori and
+žanrs.idžanrs = grāmatas.idžanrs and 
+grāmatas.nosaukums like 'the%'
+order by apraksts asc;
+</pre>
+<h4>Vaicājums 5 </h4>
+<p>Cik katrā žanrā ir grāmatas, sākt ar to, kurā ir visvairāk, vidējais lpp. skaits žanrā, 
+kopējais lpp.skaits, sakārtots pēc kopējā lpp. skaita(no mazākā uz lielāko)</p>
+<pre> 
+select apraksts ,count(nosaukums) as 'Grāmatu skaits',
+avg(lpp_skaits) as 'Vidējais lpp. skaits', sum(lpp_skaits) as 'Kopējais lpp. skaits'
+from grāmatas, žanrs
+where žanrs.idžanrs = grāmatas.idžanrs
+group by apraksts
+order by sum(lpp_skaits) asc;
+</pre>
+
+<h4>Vaicājums 6 </h4>
+<p>Grāmatas, kam vērtējums mazāks par 2 un lpp. skaits ir starp
+300 un 400, autora uzvārds un vārds</p>
+<pre> 
+select nosaukums, vērtējums, lpp_skaits, uzvārds, vārds
+from reitings, grāmatas, autori
+where reitings.idreitings = grāmatas.idreitings and
+autori.idautori = grāmatas.idautori and
+vērtējums <= 2 and (lpp_skaits < 400) and (lpp_skaits > 300);
+</pre>
+
+<h4>Vaicājums 7 </h4>
+<p>Cik no valsts ir izlasītas grāmatas, vidējais reitings,
+ dilstošā secībā valstu nosaukumi, vidējais lpp. skaits</p>
+<pre> 
+select valstis.nosaukums, count(grāmatas.nosaukums) as 'Grāmatu skaits', avg(vērtējums) as 'Vidējais vērtējums',
+avg(lpp_skaits) as 'Vidējais lpp. skaits'
+from grāmatas, autori, valstis, reitings
+where valstis.idvalstis = autori.idvalstis and
+autori.idautori = grāmatas.idautori and
+reitings.idreitings = grāmatas.idreitings
+group by nosaukums;
+</pre>
+
+<h4>Vaicājums 8 </h4>
+<p>Autori, kuru grāmatām reitings = 5, sakārtots dilstošā secībā pēc nosaukuma</p>
+<pre> 
+select uzvārds, vārds, nosaukums, vērtējums
+from autori, grāmatas, reitings
+where autori.idautori = grāmatas.idautori and
+reitings.idreitings = grāmatas.idreitings and
+vērtējums = 5
+order by nosaukums desc;
+</pre>
+
+<h4>Vaicājums 9 </h4>
+<p>Grāmatas, kas vecākas par 50 gadiem un kam vērtējums 
+augstāks par 4, autors, valsts </p>
+<pre> 
+select grāmatas.nosaukums, oriģ_izd_gads, vērtējums, uzvārds, vārds, valstis.nosaukums
+from grāmatas, reitings, autori, valstis
+where valstis.idvalstis = autori.idvalstis and
+autori.idautori = grāmatas.idautori and
+reitings.idreitings = grāmatas.idreitings and
+oriģ_izd_gads <= 1972 and
+vērtējums >= 4
+order by oriģ_izd_gads asc;
+</pre>
+
+<h4>Vaicājums 10 </h4>
+<p>Grāmatas, kuru oriģinālais izdošanas gads ir par 50 gadiem lielāks nekā izdošanas gads, kāds izdevējs</p>
+<pre> 
+select grāmatas.nosaukums, izdošanas_gads, oriģ_izd_gads, izdevniecības.nosaukums
+from izdevniecības, grāmatas
+where izdevniecības.idizdevniecības = grāmatas.idizdevniecības and
+izdošanas_gads - oriģ_izd_gads >= 50
+order by oriģ_izd_gads desc;
+</pre>
+<br>
+<form action="vaicajuma_rezultats.php" method="post">
+<label for="ieraksts"><b>Ievadiet vaicājumu: </b></label>
+<br>
+<textarea name="ieraksts" required rows="4" cols="80"></textarea>
+<br><br>
+<input type="submit" value="Vaicājuma izpilde">
+</form>
+
+</body>
+</html>
