@@ -1,8 +1,8 @@
 <?php
 echo "<meta charset='utf-8'>";
 $dblocation='localhost'; //mainīgais
-$dbuser='root';
-$dbpasswd="";
+#$dbuser='';
+#$dbpasswd="";
 //$dbname = "books_db";
 $conn = new mysqli($dblocation, $dbuser, $dbpasswd);
 if ($conn->connect_error) {
